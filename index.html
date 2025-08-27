@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Você me ama?</title>
+  <style>
+    body {
+      background-color: #ffe6e6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #sim {
+      background-color: #ff4d6d;
+      color: white;
+    }
+    #nao {
+      background-color: #ddd;
+      position: absolute;
+    }
+    .hidden {
+      display: none;
+    }
+    .resultado {
+      text-align: center;
+    }
+    .resultado img {
+      max-width: 200px;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Você me ama? ❤️</h1>
+  <button id="sim">Sim</button>
+  <button id="nao">Não</button>
+
+  <div id="resultado" class="hidden resultado">
+    <img src="pixel_arte.png" alt="Pixel arte romântica">
+    <h2>HaHaHa, sabia 😍</h2>
+  </div>
+
+  <script>
+    const nao = document.getElementById("nao");
+    const sim = document.getElementById("sim");
+    const resultado = document.getElementById("resultado");
+
+    function moveButton() {
+      const x = Math.random() * (window.innerWidth - nao.offsetWidth);
+      const y = Math.random() * (window.innerHeight - nao.offsetHeight);
+      nao.style.left = `${x}px`;
+      nao.style.top = `${y}px`;
+    }
+
+    nao.addEventListener("mouseover", moveButton);
+    nao.addEventListener("touchstart", function (e) {
+      e.preventDefault();
+      moveButton();
+    });
+
+    sim.addEventListener("click", () => {
+      document.querySelector("h1").classList.add("hidden");
+      sim.classList.add("hidden");
+      nao.classList.add("hidden");
+      resultado.classList.remove("hidden");
+    });
+  </script>
+</body>
+</html>
