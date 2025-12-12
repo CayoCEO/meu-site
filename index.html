@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Site Responsivo com Galaxia</title>
@@ -129,16 +133,52 @@ body {
 
     width: 80%;
     max-width: 600px;
-    padding: 20px;
+    padding: 22px;
 
-    background: #aaa3a3; /* mais escuro */
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
     border-radius: 30px;
-    box-shadow: 
-        rgba(255, 255, 255, 0.08) 0px 30px 50px -12px inset,
-        rgba(0, 0, 0, 0.5) 0px 18px 26px -18px inset;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.45),
+        0 0 35px rgba(180, 120, 255, 0.35),
+        inset 0 0 25px rgba(255, 255, 255, 0.08);
 
     z-index: 20;
 }
+
+
+@keyframes openCard {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes closeCard {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.94);
+  }
+}
+
+.card.closing {
+  animation: closeCard 0.3s ease forwards;
+}
+
+
+
 
 .card.open {
     display: block;
@@ -182,7 +222,7 @@ body {
 .text {
     text-align: center;
     font-size: 18px;
-    color: #333;
+    color: #000000;
 }
 
 /* Responsividade */
@@ -199,6 +239,40 @@ body {
         height: 200px;
     }
 }
+
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+
+  background: none;
+  border: none;
+  color: rgba(180, 25, 25, 0.664);
+
+  font-size: 22px;
+  cursor: pointer;
+  opacity: 0.7;
+  z-index: 30;
+}
+
+.close-btn:hover {
+  opacity: 1;
+}
+
+.card p {
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.card,
+.card * {
+  font-family: 'Great Vibes', cursive !important;
+}
+
+.card .mensagem {
+  font-size: 29px;
+}
+
 
 </style>
 
@@ -222,6 +296,9 @@ body {
     </div>
 
     <div class="card" id="card">
+
+<button class="close-btn" onclick="fecharCard()">✕</button>
+
         <div class="stories">
             <div class="story"><img src="img/lembrança1.jpg" alt="Lembrança 1"></div>
             <div class="story"><img src="img/lembrança2.jpg" alt="Lembrança 2"></div>
@@ -229,8 +306,8 @@ body {
             <div class="story"><img src="https://source.unsplash.com/featured/?mountain" alt="Lembrança 4"></div>
         </div>
         <div class="text">
-          Aqui ficaram nossas proximas lembranças, que esse site seja nosso incentivo pra nos vermos sempre
-          e criar boas lembranças rs.
+          Aqui ficarão guardadas nossas próximas lembranças, como um convite eterno para nos vermos sempre
+           e criarmos momentos que fiquem para sempre no coração. ✨
         </div>
     </div>
 
@@ -239,6 +316,18 @@ body {
             const card = document.getElementById('card');
             card.classList.add('open');
         });
+
+        const card = document.querySelector(".card");
+
+function fecharCard() {
+  card.classList.add("closing");
+
+  setTimeout(() => {
+    card.classList.remove("open");
+    card.classList.remove("closing");
+  }, 300);
+}
+
     </script>
 </body>
 
