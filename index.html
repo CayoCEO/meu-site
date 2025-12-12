@@ -2,63 +2,77 @@
 <html lang="pt-BR">
 <head>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <!-- =======================
+       META / TÍTULO
+  ======================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Responsivo com Galáxia</title>
 
+  <!-- =======================
+       FONTE
+  ======================== -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site Responsivo com Galaxia</title>
-    <style>
+  <!-- =======================
+       CSS
+  ======================== -->
+  <style>
 
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
+  /* =======================
+     BASE / BODY
+  ======================== */
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
 
-  background:
-    radial-gradient(circle at 50% 120%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 60%),
-    radial-gradient(circle at 80% 0%, rgba(0, 140, 255, 0.25) 0%, rgba(0, 0, 0, 0) 50%),
-    radial-gradient(circle at 20% -10%, rgba(255, 200, 255, 0.25) 0%, rgba(0, 0, 0, 0) 45%),
-    linear-gradient(to bottom, #0a0f1e 0%, #0b1224 30%, #08101f 60%, #050b16 100%);
+    background:
+      radial-gradient(circle at 50% 120%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%),
+      radial-gradient(circle at 80% 0%, rgba(0,140,255,0.25) 0%, rgba(0,0,0,0) 50%),
+      radial-gradient(circle at 20% -10%, rgba(255,200,255,0.25) 0%, rgba(0,0,0,0) 45%),
+      linear-gradient(to bottom, #0a0f1e 0%, #0b1224 30%, #08101f 60%, #050b16 100%);
 
-  background-attachment: fixed;
-  color: white;
-  overflow-x: hidden;
+    background-attachment: fixed;
+    color: white;
+    overflow-x: hidden;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-  position: relative;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-family: Arial, sans-serif;
+  }
 
-/* Efeito de neve */
-.snow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
+  /* =======================
+     NEVE
+  ======================== */
+  .snow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
 
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake1.png"),
-    url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake2.png"),
-    url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake3.png");
-  background-repeat: repeat;
-  background-size: 600px 600px;
-  animation: snow 10s linear infinite;
-}
+    background-image:
+      url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake1.png"),
+      url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake2.png"),
+      url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake3.png");
 
-@keyframes snow {
-  0% { background-position: 0px 0px, 0px 0px, 0px 0px; }
-  50% { background-position: 500px 500px, 100px 200px, -100px 150px; }
-  100% { background-position: 500px 1000px, 200px 400px, -100px 300px; }
-}
+    background-repeat: repeat;
+    background-size: 600px 600px;
+    animation: snow 10s linear infinite;
+  }
 
+  @keyframes snow {
+    0%   { background-position: 0 0, 0 0, 0 0; }
+    50%  { background-position: 500px 500px, 100px 200px, -100px 150px; }
+    100% { background-position: 500px 1000px, 200px 400px, -100px 300px; }
+  }
 
-/* Partículas roxas */
-.particles {
+  /* =======================
+     PARTÍCULAS
+  ======================== */
+  .particles {
     position: absolute;
     bottom: 100px;
     left: 50%;
@@ -66,65 +80,57 @@ body {
     width: 200px;
     height: 50px;
     pointer-events: none;
-}
+  }
 
-.particle {
+  .particle {
     position: absolute;
     width: 4px;
     height: 4px;
     background: purple;
     border-radius: 50%;
     animation: float 3s infinite ease-in-out;
-}
+  }
 
-.particle:nth-child(1) { left: 10%; animation-delay: 0s; }
-.particle:nth-child(2) { left: 20%; animation-delay: 0.5s; }
-.particle:nth-child(3) { left: 30%; animation-delay: 1s; }
-.particle:nth-child(4) { left: 40%; animation-delay: 1.5s; }
-.particle:nth-child(5) { left: 50%; animation-delay: 2s; }
-.particle:nth-child(6) { left: 60%; animation-delay: 2.5s; }
-.particle:nth-child(7) { left: 70%; animation-delay: 3s; }
-.particle:nth-child(8) { left: 80%; animation-delay: 3.5s; }
-.particle:nth-child(9) { left: 90%; animation-delay: 4s; }
+  .particle:nth-child(n) { animation-delay: calc(var(--i) * 0.5s); }
 
-@keyframes float {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    50% { transform: translateY(-20px) scale(1.2); opacity: 0.7; }
+  @keyframes float {
+    0%   { transform: translateY(0) scale(1); opacity: 1; }
+    50%  { transform: translateY(-20px) scale(1.2); opacity: 0.7; }
     100% { transform: translateY(-40px) scale(0.8); opacity: 0; }
-}
+  }
 
-/* Botão */
-/* Botão novo (Uiverse) */
-.btn {
-  font-size: 1.2rem;
-  padding: 1rem 2.5rem;
-  border: none;
-  outline: none;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  text-transform: uppercase;
-  background-color: rgb(14, 14, 26);
-  color: rgb(234, 234, 234);
-  font-weight: 700;
-  transition: 0.6s;
-  box-shadow: 0px 0px 60px #1f4c65;
-  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-  position: relative;
-  z-index: 10; /* mantém acima da neve */
-}
+  /* =======================
+     BOTÃO PRINCIPAL
+  ======================== */
+  .btn {
+    font-size: 1.2rem;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 700;
 
-.btn:active {
-  scale: 0.92;
-}
+    background: rgb(14,14,26);
+    color: rgb(234,234,234);
+    box-shadow: 0 0 60px #1f4c65;
+    transition: 0.6s;
 
-.btn:hover {
-  background: rgb(2,29,78);
-  background: linear-gradient(270deg, rgba(2, 29, 78, 0.681) 0%, rgba(31, 215, 232, 0.873) 60%);
-  color: rgb(4, 4, 38);
-}
+    position: relative;
+    z-index: 10;
+  }
 
-/* Carta */
-.card {
+  .btn:hover {
+    background: linear-gradient(270deg, rgba(2,29,78,0.68), rgba(31,215,232,0.87));
+    color: rgb(4,4,38);
+  }
+
+  .btn:active { scale: 0.92; }
+
+  /* =======================
+     CARD (CARTA)
+  ======================== */
+  .card {
     display: none;
     position: fixed;
     top: 50%;
@@ -135,174 +141,126 @@ body {
     max-width: 600px;
     padding: 22px;
 
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255,255,255,0.12);
     backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
 
     border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255,255,255,0.22);
 
     box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.45),
-        0 0 35px rgba(180, 120, 255, 0.35),
-        inset 0 0 25px rgba(255, 255, 255, 0.08);
+      0 18px 45px rgba(0,0,0,0.45),
+      0 0 35px rgba(180,120,255,0.35),
+      inset 0 0 25px rgba(255,255,255,0.08);
 
     z-index: 20;
-}
 
-
-@keyframes openCard {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.96);
+    font-family: 'Great Vibes', cursive;
   }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
 
-@keyframes closeCard {
-  from {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.94);
-  }
-}
-
-.card.closing {
-  animation: closeCard 0.3s ease forwards;
-}
-
-
-
-
-.card.open {
+  .card.open {
     display: block;
-    animation: openCard 1s ease-out;
-}
+    animation: openCard 0.6s ease forwards;
+  }
 
-@keyframes openCard {
-    0% { transform: translate(-50%, -50%) scale(0) rotateY(180deg); opacity: 0; }
-    100% { transform: translate(-50%, -50%) scale(1) rotateY(0deg); opacity: 1; }
-}
+  .card.closing {
+    animation: closeCard 0.3s ease forwards;
+  }
 
-/* Stories */
-.stories {
+  @keyframes openCard {
+    from { opacity: 0; transform: translate(-50%,-50%) scale(0.96); }
+    to   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  }
+
+  @keyframes closeCard {
+    from { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    to   { opacity: 0; transform: translate(-50%,-50%) scale(0.94); }
+  }
+
+  /* =======================
+     BOTÃO FECHAR
+  ======================== */
+  .close-btn {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+
+    background: none;
+    border: none;
+    color: rgba(180,25,25,0.7);
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .close-btn:hover { opacity: 1; }
+
+  /* =======================
+     STORIES
+  ======================== */
+  .stories {
     display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
     gap: 10px;
+    overflow-x: auto;
     margin-bottom: 20px;
-}
+  }
 
-.story {
+  .story {
     flex: 0 0 200px;
     height: 300px;
-    background: #f0f0f0;
     border-radius: 10px;
-    scroll-snap-align: start;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    color: #333;
-}
+    overflow: hidden;
+  }
 
-.story img {
+  .story img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 10px;
-}
+  }
 
-.text {
+  /* =======================
+     TEXTO
+  ======================== */
+  .text {
     text-align: center;
-    font-size: 18px;
-    color: #000000;
-}
+    font-size: 28px;
+    line-height: 1.25;
+    color: #000;
+  }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    #button {
-        font-size: 18px;
-        padding: 10px 20px;
-    }
-    .card {
-        width: 90%;
-    }
-    .story {
-        flex: 0 0 150px;
-        height: 200px;
-    }
-}
+  /* =======================
+     RESPONSIVO
+  ======================== */
+  @media (max-width: 768px) {
+    .card { width: 90%; }
+    .story { flex: 0 0 150px; height: 200px; }
+  }
 
-.close-btn {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-
-  background: none;
-  border: none;
-  color: rgba(180, 25, 25, 0.664);
-
-  font-size: 22px;
-  cursor: pointer;
-  opacity: 0.7;
-  z-index: 30;
-}
-
-.close-btn:hover {
-  opacity: 1;
-}
-
-.card p {
-  font-size: 26px;
-  line-height: 1.2;
-}
-
-.card,
-.card * {
-  font-family: 'Great Vibes', cursive !important;
-}
-
-.card .mensagem {
-  font-size: 29px;
-}
-
-
-</style>
-
+  </style>
 </head>
+
 <body>
 
+  <!-- NEVE -->
   <div class="snow"></div>
 
-  <button id="button" class="btn" onclick="verificarSenha()">Por Aqui</button>
+  <!-- BOTÃO -->
+  <button class="btn" onclick="verificarSenha()">Por Aqui</button>
 
+  <!-- PARTÍCULAS -->
   <div class="particles">
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
   </div>
 
+  <!-- CARD -->
   <div class="card" id="card">
     <button class="close-btn" onclick="fecharCard()">✕</button>
 
     <div class="stories">
-      <div class="story"><img src="img/lembrança1.jpg" alt="Lembrança 1"></div>
-      <div class="story"><img src="img/lembrança2.jpg" alt="Lembrança 2"></div>
-      <div class="story"><img src="https://source.unsplash.com/featured/?ocean" alt="Lembrança 3"></div>
-      <div class="story"><img src="https://source.unsplash.com/featured/?mountain" alt="Lembrança 4"></div>
+      <div class="story"><img src="img/lembrança1.jpg"></div>
+      <div class="story"><img src="img/lembrança2.jpg"></div>
+      <div class="story"><img src="https://source.unsplash.com/featured/?ocean"></div>
+      <div class="story"><img src="https://source.unsplash.com/featured/?mountain"></div>
     </div>
 
     <div class="text">
@@ -311,33 +269,29 @@ body {
     </div>
   </div>
 
-  <!-- Música (fica dentro do mesmo body) -->
-  <iframe
-    style="display:none"
+  <!-- MÚSICA -->
+  <iframe style="display:none"
     src="https://www.youtube.com/embed/iggmiF7DNoM?autoplay=1&loop=1&playlist=iggmiF7DNoM"
     allow="autoplay">
   </iframe>
 
+  <!-- =======================
+       JAVASCRIPT
+  ======================== -->
   <script>
     const card = document.getElementById("card");
-    const senhaCorreta = "recomeço"; // <-- TROQUE sua senha aqui
+    const senhaCorreta = "recomeço";
 
     function verificarSenha() {
-      const senhaDigitada = prompt("Digite a senha 💜");
-
-      if (senhaDigitada === senhaCorreta) {
-        card.classList.add("open");
-      } else if (senhaDigitada !== null) {
-        alert("Senha incorreta 😢");
-      }
+      const senha = prompt("Digite a senha 💜");
+      if (senha === senhaCorreta) card.classList.add("open");
+      else if (senha !== null) alert("Senha incorreta 😢");
     }
 
     function fecharCard() {
       card.classList.add("closing");
-
       setTimeout(() => {
-        card.classList.remove("open");
-        card.classList.remove("closing");
+        card.classList.remove("open","closing");
       }, 300);
     }
   </script>
