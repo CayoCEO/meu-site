@@ -324,6 +324,57 @@ body.universe .particles {
   display: none;
 }
 
+/* OVERLAY DE SENHA */
+.password-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.password-box {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(14px);
+  border-radius: 24px;
+  padding: 24px;
+  width: 90%;
+  max-width: 320px;
+  text-align: center;
+}
+
+.password-box h2 {
+  margin: 0 0 14px;
+  font-family: 'Great Vibes', cursive;
+  font-size: 36px;
+  color: #f3ecff;
+}
+
+.password-box input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  margin-bottom: 14px;
+  font-size: 16px;
+}
+
+.password-box button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #7b4dff, #b88cff);
+  color: #fff;
+  font-weight: 600;
+}
+
 
   </style>
 </head>
@@ -338,6 +389,16 @@ body.universe .particles {
   <div class="portal" id="portal">
     <!-- BOTÃO -->
     <button class="btn" id="btnPortal" onclick="verificarSenha()">Por Aqui</button>
+
+    <!-- TELA DE SENHA -->
+<div class="password-overlay" id="passwordOverlay">
+  <div class="password-box">
+    <h2>Digite a senha 💜</h2>
+    <input type="password" id="passwordInput" placeholder="senha..." />
+    <button onclick="confirmarSenha()">Entrar</button>
+  </div>
+</div>
+
 
     <!-- PARTÍCULAS -->
     <div class="particles" aria-hidden="true">
@@ -400,14 +461,42 @@ body.universe .particles {
   <!-- =======================
        JAVASCRIPT
   ======================== -->
-  <script>
+<script>
+
+function confirmarSenha() {
+  const senha = document.getElementById("passwordInput").value;
+  const overlay = document.getElementById("passwordOverlay");
+
+  if (senha === senhaCorreta) {
+    overlay.style.display = "none";
+
+    card.classList.add("open");
+    document.body.classList.add("universe");
+
+    card.classList.add("in-flow");
+    universe.prepend(card);
+
+    btnPortal.style.display = "none";
+
+    setTimeout(() => {
+      universe.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 400);
+  } else {
+    alert("Senha incorreta 😢");
+  }
+}
+
+
     const card = document.getElementById("card");
     const btnPortal = document.getElementById("btnPortal");
     const universe = document.getElementById("universe");
     const senhaCorreta = "recomeço";
 
     function verificarSenha() {
-      const senha = prompt("Digite a senha 💜");
+  document.getElementById("passwordOverlay").style.display = "flex";
+}
+{
+      
 
       if (senha === senhaCorreta) {
         // abre o card
