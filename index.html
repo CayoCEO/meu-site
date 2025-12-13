@@ -1,533 +1,892 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- =======================
-       META / TÍTULO
-  ======================== -->
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Site Responsivo com Galáxia</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Universo de Vocês ✨</title>
 
-  <!-- =======================
-       FONTE
-  ======================== -->
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
-  <!-- =======================
-       CSS
-  ======================== -->
   <style>
-    /* =======================
-       BASE / BODY
-    ======================== */
-    body {
-      margin: 0;
-      padding: 0;
-
+    /* =========================================================
+       RESET / BASE
+    ========================================================= */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, Arial, sans-serif;
+      color:#fff;
+      overflow-x:hidden;
       background:
         radial-gradient(circle at 50% 120%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%),
         radial-gradient(circle at 80% 0%, rgba(0,140,255,0.25) 0%, rgba(0,0,0,0) 50%),
         radial-gradient(circle at 20% -10%, rgba(255,200,255,0.25) 0%, rgba(0,0,0,0) 45%),
         linear-gradient(to bottom, #0a0f1e 0%, #0b1224 30%, #08101f 60%, #050b16 100%);
-
       background-attachment: fixed;
-      color: white;
-      overflow-x: hidden;
-      overflow-y: hidden; /* trava antes da senha */
-
-      font-family: Arial, sans-serif;
-      position: relative;
     }
 
-    /* =======================
-       PORTAL (tela inicial centralizada)
-    ======================== */
-    .portal {
-      min-height: 100vh;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-    }
+    /* =========================================================
+       MOSTRAR / ESCONDER SEÇÕES
+    ========================================================= */
+    .u-hidden{display:none !important;}
+    .u-show{display:block !important;}
 
-    /* Quando entrar no "universo", o portal vira topo e abre espaço pra rolar */
-    body.universe {
-      overflow-y: auto;
-    }
-
-    body.universe .portal {
-      min-height: auto;
-      align-items: flex-start;
-      padding-top: 80px;
-      padding-bottom: 40px;
-    }
-
-    /* =======================
-       NEVE
-    ======================== */
-    .snow {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-
+    /* =========================================================
+       NEVE (HOME)
+    ========================================================= */
+    .snow{
+      position: fixed; inset:0; pointer-events:none; z-index:0;
       background-image:
         url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake1.png"),
         url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake2.png"),
         url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/191814/flake3.png");
-
       background-repeat: repeat;
       background-size: 600px 600px;
       animation: snow 10s linear infinite;
+      opacity:.85;
+    }
+    @keyframes snow{
+      0%{background-position:0 0,0 0,0 0}
+      50%{background-position:500px 500px,100px 200px,-100px 150px}
+      100%{background-position:500px 1000px,200px 400px,-100px 300px}
     }
 
-    @keyframes snow {
-      0%   { background-position: 0 0, 0 0, 0 0; }
-      50%  { background-position: 500px 500px, 100px 200px, -100px 150px; }
-      100% { background-position: 500px 1000px, 200px 400px, -100px 300px; }
+    /* =========================================================
+       HOME / PORTAL
+    ========================================================= */
+    #home{
+      position:relative;
+      z-index:1;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      text-align:center;
     }
 
-    /* =======================
-       PARTÍCULAS
-    ======================== */
-    .particles {
-      position: absolute;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 200px;
-      height: 50px;
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: purple;
-      border-radius: 50%;
-      animation: float 3s infinite ease-in-out;
-    }
-
-    @keyframes float {
-      0%   { transform: translateY(0) scale(1); opacity: 1; }
-      50%  { transform: translateY(-20px) scale(1.2); opacity: 0.7; }
-      100% { transform: translateY(-40px) scale(0.8); opacity: 0; }
-    }
-
-    /* =======================
-       BOTÃO PRINCIPAL
-    ======================== */
-    .btn {
-      font-size: 1.2rem;
-      padding: 1rem 2.5rem;
+    .btn{
+      font-size: 1.15rem;
+      padding: 1rem 2.3rem;
       border: none;
-      border-radius: 0.4rem;
+      border-radius: .6rem;
       cursor: pointer;
       text-transform: uppercase;
-      font-weight: 700;
-
+      font-weight: 900;
       background: rgb(14,14,26);
       color: rgb(234,234,234);
       box-shadow: 0 0 60px #1f4c65;
-      transition: 0.6s;
-
-      position: relative;
-      z-index: 5;
+      transition: .35s;
     }
-
-    .btn:hover {
+    .btn:hover{
       background: linear-gradient(270deg, rgba(2,29,78,0.68), rgba(31,215,232,0.87));
       color: rgb(4,4,38);
+      transform: translateY(-2px);
     }
+    .btn:active{transform: translateY(0) scale(.98)}
 
-    .btn:active { scale: 0.92; }
-
-    /* =======================
-       CARD (CARTA)
-    ======================== */
-    .card {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-
-      width: 80%;
-      max-width: 600px;
-      padding: 22px;
-
-      background: rgba(255,255,255,0.12);
-      backdrop-filter: blur(14px);
-
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.22);
-
-      box-shadow:
-        0 18px 45px rgba(0,0,0,0.45),
-        0 0 35px rgba(180,120,255,0.35),
-        inset 0 0 25px rgba(255,255,255,0.08);
-
-      z-index: 20;
-      font-family: 'Great Vibes', cursive;
-    }
-
-    .card.open {
-      display: block;
-      animation: openCard 0.6s ease forwards;
-    }
-
-    .card.closing {
-      animation: closeCard 0.3s ease forwards;
-    }
-
-    @keyframes openCard {
-      from { opacity: 0; transform: translate(-50%,-50%) scale(0.96); }
-      to   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
-    }
-
-    @keyframes closeCard {
-      from { opacity: 1; transform: translate(-50%,-50%) scale(1); }
-      to   { opacity: 0; transform: translate(-50%,-50%) scale(0.94); }
-    }
-
-    /* =======================
-       BOTÃO FECHAR
-    ======================== */
-    .close-btn {
+    .particles{
       position: absolute;
-      top: 14px;
-      right: 16px;
-
-      background: none;
-      border: none;
-      color: rgba(180,25,25,0.7);
-      font-size: 22px;
-      cursor: pointer;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      height: 60px;
+      pointer-events: none;
+      z-index: 2;
+      opacity:.9;
+    }
+    .particle{
+      position:absolute;
+      width:4px;height:4px;border-radius:99px;
+      background: #b88cff;
+      animation: float 3s infinite ease-in-out;
+    }
+    @keyframes float{
+      0%{transform:translateY(0) scale(1);opacity:1}
+      50%{transform:translateY(-20px) scale(1.2);opacity:.7}
+      100%{transform:translateY(-40px) scale(.8);opacity:0}
     }
 
-    .close-btn:hover { opacity: 1; }
-
-    /* =======================
-       STORIES
-    ======================== */
-    .stories {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      margin-bottom: 20px;
+    /* =========================================================
+       OVERLAY SENHA
+    ========================================================= */
+    .password-overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(8px);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index: 50;
+      padding: 18px;
     }
-
-    .story {
-      flex: 0 0 200px;
-      height: 300px;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .story img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* =======================
-       TEXTO
-    ======================== */
-    .text {
-      text-align: center;
-      font-size: 28px;
-      line-height: 1.25;
-      color: #000;
-    }
-
-    /* =======================
-       SEÇÕES DO UNIVERSO (rolagem)
-    ======================== */
-    .universe-wrap {
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 16px 80px;
-      display: none; /* escondido até liberar pela senha */
-    }
-
-    body.universe .universe-wrap {
-      display: block;
-    }
-
-    .section {
-      background: rgba(255, 255, 255, 0.10);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(12px);
+    .password-box{
+      width:min(360px, 100%);
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(14px);
       border-radius: 24px;
       padding: 22px;
-      margin-bottom: 18px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      text-align:center;
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+    }
+    .password-box h2{
+      margin:0 0 12px;
+      font-family:'Great Vibes', cursive;
+      font-size: 38px;
+      font-weight:400;
+      color:#f3ecff;
+    }
+    .password-box input{
+      width:100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+    .password-box button{
+      width:100%;
+      padding: 12px;
+      border-radius: 14px;
+      border: none;
+      cursor:pointer;
+      background: linear-gradient(135deg, #7b4dff, #b88cff);
+      color:#fff;
+      font-weight: 800;
+      letter-spacing:.3px;
     }
 
-    .section h2 {
-      margin: 0 0 10px;
-      font-family: 'Great Vibes', cursive;
-      font-size: 42px;
-      font-weight: 400;
-      color: rgba(243,236,255,0.95);
-      text-align: center;
+    /* =========================================================
+       UNIVERSO (ENCAPSULADO)
+    ========================================================= */
+    #universo{
+      min-height:100vh;
+      position:relative;
+      color: rgba(255,255,255,.92);
+      background: radial-gradient(1200px 800px at 15% 10%, #132055 0%, transparent 55%),
+                  radial-gradient(900px 700px at 85% 20%, #2b0f2a 0%, transparent 55%),
+                  linear-gradient(180deg, #060712, #0a0f24);
+      overflow-x:hidden;
+    }
+    #universo #u-space{
+      position:fixed; inset:0;
+      width:100%; height:100%;
+      z-index:0;
+      filter:saturate(1.1) contrast(1.05);
+    }
+    #universo .u-vignette{
+      position:fixed; inset:-40px;
+      pointer-events:none;
+      z-index:1;
+      background:
+        radial-gradient(900px 650px at 50% -10%, rgba(255,255,255,.08), transparent 60%),
+        radial-gradient(900px 650px at 50% 110%, rgba(0,0,0,.6), transparent 58%),
+        radial-gradient(1300px 900px at 50% 50%, transparent 45%, rgba(0,0,0,.55) 78%);
+      mix-blend-mode: overlay;
+    }
+    #universo header, #universo main, #universo .u-modal{position:relative; z-index:2}
+
+    #universo header{
+      position:sticky; top:0; z-index:5;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(6,7,18,.85), rgba(6,7,18,.35));
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    #universo .u-bar{
+      max-width:1100px;
+      margin:0 auto;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    #universo .u-brand{display:flex; gap:12px; align-items:center}
+    #universo .u-logo{
+      width:40px;height:40px;border-radius:14px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 45%),
+                  linear-gradient(135deg, rgba(108,198,255,.85), rgba(255,107,179,.75));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: 0 0 40px rgba(128,180,255,.45);
+    }
+    #universo .u-brand h1{margin:0;font-size:1.05rem;line-height:1.1}
+    #universo .u-brand p{margin:2px 0 0;color:rgba(255,255,255,.65);font-size:.82rem}
+
+    #universo .u-nav{display:flex; gap:10px; flex-wrap:wrap}
+    #universo .u-chip{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
+      padding:10px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:800;
+      transition:.2s;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    #universo .u-chip:hover{transform:translateY(-1px); background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.22)}
+
+    #universo .u-wrap{max-width:1100px;margin:0 auto;padding:24px}
+    #universo .u-hero{
+      padding: 34px 0 14px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 14px;
+      align-items:stretch;
+    }
+    #universo .u-panel{
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.06));
+      border-radius: 26px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      overflow:hidden;
+      position:relative;
+    }
+    #universo .u-panel .u-inner{padding:22px}
+    #universo .u-title{
+      font-family:"Great Vibes", cursive;
+      font-size: clamp(2.2rem, 4.2vw, 3.9rem);
+      line-height:.95;
+      margin:0 0 10px;
+    }
+    #universo .u-lead{margin:0;color:rgba(255,255,255,.65);line-height:1.6}
+
+    #universo .u-cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; align-items:center}
+    #universo .u-btn{
+      border:none; cursor:pointer;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight:900;
+      letter-spacing:.4px;
+      text-transform: uppercase;
+      transition:.2s;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    }
+    #universo .u-btn.primary{
+      color:#071018;
+      background: linear-gradient(135deg, rgba(108,198,255,1), rgba(255,107,179,1));
+      box-shadow: 0 0 34px rgba(108,198,255,.18);
+    }
+    #universo .u-btn:hover{transform:translateY(-2px)}
+    #universo .u-pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.65);
+      font-weight:800;
+    }
+    #universo .u-dot{
+      width:10px;height:10px;border-radius:99px;
+      background:#48ffb6;
+      box-shadow:0 0 18px rgba(72,255,182,.55);
+      animation: u_pulse 1.4s infinite ease-in-out;
+    }
+    @keyframes u_pulse{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.6);opacity:1}}
+
+    #universo .u-side{display:flex; flex-direction:column; gap:12px}
+    #universo .u-mini{
+      padding:16px;
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+    }
+    #universo .u-mini h3{margin:0 0 8px}
+    #universo .u-mini p{margin:0;color:rgba(255,255,255,.65);line-height:1.55}
+    #universo .u-meter{
+      margin-top: 12px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      overflow:hidden;
+    }
+    #universo .u-meter i{
+      display:block;height:100%;width:40%;
+      background: linear-gradient(90deg, rgba(108,198,255,1), rgba(255,107,179,1));
+      transition: width 1.2s ease;
     }
 
-    .section p {
-      margin: 0;
-      color: rgba(243,236,255,0.9);
-      text-align: center;
-      font-size: 20px;
-      line-height: 1.4;
-      font-family: Arial, sans-serif;
+    #universo .u-grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    #universo .u-card{
+      grid-column: span 4;
+      padding: 18px;
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 10px 35px rgba(0,0,0,.35);
+    }
+    #universo .u-card h4{margin:0 0 8px}
+    #universo .u-card p{margin:0;color:rgba(255,255,255,.65);line-height:1.55}
+    #universo .u-link{
+      margin-top:12px;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight:900;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
     }
 
-    /* =======================
-       RESPONSIVO
-    ======================== */
-    @media (max-width: 768px) {
-      .card { width: 90%; }
-      .story { flex: 0 0 150px; height: 200px; }
-      .section h2 { font-size: 36px; }
-      .section p { font-size: 18px; }
+    /* Stories (suas imagens) */
+    #universo .u-stories{display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; margin-top:10px}
+    #universo .u-story{flex:0 0 160px; height:220px; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.12)}
+    #universo .u-story img{width:100%; height:100%; object-fit:cover; display:block}
+
+    /* Modal */
+    #universo .u-modal{
+      position:fixed; inset:0;
+      display:none;
+      place-items:center;
+      padding: 18px;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+    }
+    #universo .u-modal.open{display:grid}
+    #universo .u-box{
+      width:min(920px,100%);
+      border-radius: 26px;
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      box-shadow: 0 30px 110px rgba(0,0,0,.65);
+      overflow:hidden;
+    }
+    #universo .u-top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      padding: 14px 18px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+    }
+    #universo .u-x{
+      width:40px;height:40px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
+      color:#fff; cursor:pointer; font-size:18px;
+    }
+    #universo .u-body{padding:18px}
+    #universo .u-tabs{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px}
+    #universo .u-tab{
+      padding:10px 12px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      cursor:pointer; font-weight:900;
+    }
+    #universo .u-tab.active{background: rgba(108,198,255,.14); border-color: rgba(108,198,255,.35)}
+    #universo .u-content{display:grid; grid-template-columns: 1.1fr .9fr; gap:14px}
+    #universo .u-paper{
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      padding:16px;
+      line-height:1.65;
+      color: rgba(255,255,255,.86);
+      min-height: 220px;
+      white-space: pre-wrap;
+    }
+    #universo .u-aside{
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      padding:16px;
+    }
+    #universo .u-kpi{display:grid; gap:10px; margin-top:10px}
+    #universo .u-kpi div{
+      display:flex; justify-content:space-between; gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.65);
+      font-weight:900;
     }
 
-body.universe .card {
-  position: relative;
-  top: auto;
-  left: auto;
-  transform: none;
-  margin: 0 auto 40px;
-}
-
-/* Card vira parte da página (primeiro item do universo) */
-.card.in-flow {
-  position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  transform: none !important;
-  margin: 20px auto 40px;
-}
-
-/* Depois da senha, o portal não precisa mais ocupar tela */
-body.universe .portal {
-  min-height: 0;
-  padding: 0;
-}
-
-/* (opcional, mas recomendado) esconder partículas depois da senha */
-body.universe .particles {
-  display: none;
-}
-
-/* OVERLAY DE SENHA */
-.password-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 50;
-}
-
-.password-box {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(14px);
-  border-radius: 24px;
-  padding: 24px;
-  width: 90%;
-  max-width: 320px;
-  text-align: center;
-}
-
-.password-box h2 {
-  margin: 0 0 14px;
-  font-family: 'Great Vibes', cursive;
-  font-size: 36px;
-  color: #f3ecff;
-}
-
-.password-box input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  outline: none;
-  margin-bottom: 14px;
-  font-size: 16px;
-}
-
-.password-box button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, #7b4dff, #b88cff);
-  color: #fff;
-  font-weight: 600;
-}
-
-
+    @media (max-width:980px){
+      #universo .u-hero{grid-template-columns:1fr}
+      #universo .u-content{grid-template-columns:1fr}
+      #universo .u-card{grid-column: span 6}
+    }
+    @media (max-width:640px){
+      #universo .u-card{grid-column: span 12}
+      #universo .u-btn{width:100%}
+    }
   </style>
 </head>
 
 <body>
-  <!-- NEVE -->
-  <div class="snow"></div>
+  <div class="snow" aria-hidden="true"></div>
 
-  <!-- =======================
-       PORTAL
-  ======================== -->
-  <div class="portal" id="portal">
-    <!-- BOTÃO -->
-    <button class="btn" id="btnPortal" onclick="verificarSenha()">Por Aqui</button>
+  <!-- =========================
+       HOME (PORTAL + SENHA)
+  ========================== -->
+  <section id="home" class="u-show">
+    <div>
+      <h1 style="margin:0 0 8px;font-family:'Great Vibes',cursive;font-size:54px;font-weight:400;">
+        Aceita meu presente?
+      </h1>
+      <p style="margin:0 0 18px;color:rgba(255,255,255,.7);line-height:1.6;">
+        Tem um portal escondido aqui. Só abre com a senha. 💜
+      </p>
 
-    <!-- TELA DE SENHA -->
-<div class="password-overlay" id="passwordOverlay">
-  <div class="password-box">
-    <h2>Digite a senha 💜</h2>
-    <input type="password" id="passwordInput" placeholder="senha..." />
-    <button onclick="confirmarSenha()">Entrar</button>
-  </div>
-</div>
+      <button class="btn" id="btnPortal">Por aqui</button>
 
-
-    <!-- PARTÍCULAS -->
-    <div class="particles" aria-hidden="true">
-      <div class="particle" style="left:10%; animation-delay:0s;"></div>
-      <div class="particle" style="left:20%; animation-delay:0.5s;"></div>
-      <div class="particle" style="left:30%; animation-delay:1s;"></div>
-      <div class="particle" style="left:40%; animation-delay:1.5s;"></div>
-      <div class="particle" style="left:50%; animation-delay:2s;"></div>
-      <div class="particle" style="left:60%; animation-delay:2.5s;"></div>
-      <div class="particle" style="left:70%; animation-delay:3s;"></div>
-      <div class="particle" style="left:80%; animation-delay:3.5s;"></div>
-      <div class="particle" style="left:90%; animation-delay:4s;"></div>
+      <div class="particles" aria-hidden="true">
+        <div class="particle" style="left:10%;animation-delay:0s"></div>
+        <div class="particle" style="left:20%;animation-delay:.4s"></div>
+        <div class="particle" style="left:30%;animation-delay:.8s"></div>
+        <div class="particle" style="left:40%;animation-delay:1.2s"></div>
+        <div class="particle" style="left:50%;animation-delay:1.6s"></div>
+        <div class="particle" style="left:60%;animation-delay:2.0s"></div>
+        <div class="particle" style="left:70%;animation-delay:2.4s"></div>
+        <div class="particle" style="left:80%;animation-delay:2.8s"></div>
+        <div class="particle" style="left:90%;animation-delay:3.2s"></div>
+      </div>
     </div>
+  </section>
 
-    <!-- CARD -->
-    <div class="card" id="card">
-      <button class="close-btn" onclick="fecharCard()">✕</button>
-
-      <div class="stories">
-        <div class="story"><img src="img/lembrança1.jpg" alt="Lembrança 1"></div>
-        <div class="story"><img src="img/lembrança2.jpg" alt="Lembrança 2"></div>
-        <div class="story"><img src="https://source.unsplash.com/featured/?ocean" alt="Lembrança 3"></div>
-        <div class="story"><img src="https://source.unsplash.com/featured/?mountain" alt="Lembrança 4"></div>
-      </div>
-
-      <div class="text">
-        Aqui ficarão guardadas nossas próximas lembranças, como um convite eterno para nos vermos sempre
-        e criarmos momentos que fiquem para sempre no coração. ✨
-      </div>
+  <!-- Overlay de senha -->
+  <div class="password-overlay" id="passwordOverlay">
+    <div class="password-box">
+      <h2>Digite a senha 💜</h2>
+      <input type="password" id="passwordInput" placeholder="senha..." />
+      <button id="btnConfirm">Entrar</button>
+      <button id="btnCancel" style="margin-top:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)">
+        Cancelar
+      </button>
     </div>
   </div>
 
-  <!-- =======================
-       UNIVERSO (rolável)
-  ======================== -->
-  <main class="universe-wrap" id="universe">
-    <section class="section">
-      <h2>Cartas 💌</h2>
-      <p>Um cantinho para mensagens, promessas e textos que só existem no nosso universo.</p>
-    </section>
+  <!-- =========================
+       UNIVERSO (EXTENSÃO)
+  ========================== -->
+  <section id="universo" class="u-hidden" aria-hidden="true">
+    <canvas id="u-space"></canvas>
+    <div class="u-vignette"></div>
 
-    <section class="section">
-      <h2>Nossa História 📅</h2>
-      <p>Uma linha do tempo com momentos importantes (e os que ainda vão acontecer).</p>
-    </section>
+    <header>
+      <div class="u-bar">
+        <div class="u-brand">
+          <div class="u-logo"></div>
+          <div>
+            <h1>Universo de vocês ✨</h1>
+            <p>feito pra ser sentido, não só visto</p>
+          </div>
+        </div>
 
-    <section class="section">
-      <h2>Nosso Futuro 🔮</h2>
-      <p>Planos, sonhos e tudo o que ainda vamos viver juntinhos.</p>
-    </section>
-  </main>
+        <div class="u-nav">
+          <button class="u-chip" id="uBack">⬅ Voltar</button>
+          <button class="u-chip" id="uOpen">Portal 🪐</button>
+          <button class="u-chip" id="uGlow">Modo <b id="uGlowState">NEBULOSA</b> 🌌</button>
+        </div>
+      </div>
+    </header>
 
-  <!-- MÚSICA -->
-  <iframe
-    style="display:none"
-    src="https://www.youtube.com/embed/iggmiF7DNoM?autoplay=1&loop=1&playlist=iggmiF7DNoM"
-    allow="autoplay">
-  </iframe>
+    <main class="u-wrap">
+      <section class="u-hero">
+        <div class="u-panel">
+          <div class="u-inner">
+            <h2 class="u-title">Hoje eu abri um lugar<br> só nosso.</h2>
+            <p class="u-lead">
+              Três portas: <b>Cartas</b>, <b>Nossa História</b> e <b>Nosso Futuro</b>.
+              Cada clique muda o céu.
+            </p>
 
-  <!-- =======================
-       JAVASCRIPT
-  ======================== -->
-<script>
+            <div class="u-cta">
+              <button class="u-btn primary" id="uStart">Abrir o portal ✨</button>
+              <div class="u-pill"><span class="u-dot"></span> <span id="uLive">Universo ativo.</span></div>
+            </div>
+          </div>
+        </div>
 
-function confirmarSenha() {
-  const senha = document.getElementById("passwordInput").value;
-  const overlay = document.getElementById("passwordOverlay");
+        <div class="u-side">
+          <div class="u-mini">
+            <h3>Estado do universo</h3>
+            <p id="uMood">estável, aguardando interação 🌠</p>
+            <div class="u-meter"><i id="uMeter"></i></div>
+          </div>
 
-  if (senha === senhaCorreta) {
-    overlay.style.display = "none";
+          <div class="u-mini">
+            <h3>Memórias (suas fotos)</h3>
+            <p style="margin-top:6px">Troque os caminhos das imagens se precisar.</p>
+            <div class="u-stories">
+              <div class="u-story"><img src="img/lembrança1.jpg" alt="Lembrança 1"></div>
+              <div class="u-story"><img src="img/lembrança2.jpg" alt="Lembrança 2"></div>
+              <div class="u-story"><img src="https://source.unsplash.com/featured/?ocean" alt="Lembrança 3"></div>
+              <div class="u-story"><img src="https://source.unsplash.com/featured/?mountain" alt="Lembrança 4"></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    card.classList.add("open");
-    document.body.classList.add("universe");
+      <section class="u-grid">
+        <div class="u-card">
+          <h4>📨 Cartas</h4>
+          <p>Mensagens que parecem pequenas… até tocar no coração.</p>
+          <div class="u-link" data-open="cartas">Abrir</div>
+        </div>
 
-    card.classList.add("in-flow");
-    universe.prepend(card);
+        <div class="u-card">
+          <h4>🕰️ Nossa História</h4>
+          <p>Linha do tempo com detalhes que só vocês entendem.</p>
+          <div class="u-link" data-open="historia">Abrir</div>
+        </div>
 
-    btnPortal.style.display = "none";
+        <div class="u-card">
+          <h4>🚀 Nosso Futuro</h4>
+          <p>Planos, sonhos e promessas — com um “sim” no final.</p>
+          <div class="u-link" data-open="futuro">Abrir</div>
+        </div>
+      </section>
+    </main>
 
-    setTimeout(() => {
-      universe.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 400);
-  } else {
-    alert("Senha incorreta 😢");
-  }
-}
+    <!-- Modal -->
+    <div class="u-modal" id="uModal" aria-hidden="true">
+      <div class="u-box" role="dialog" aria-modal="true">
+        <div class="u-top">
+          <strong id="uTitle">Portal</strong>
+          <button class="u-x" id="uClose">✕</button>
+        </div>
+        <div class="u-body">
+          <div class="u-tabs">
+            <button class="u-tab" data-tab="cartas">Cartas</button>
+            <button class="u-tab" data-tab="historia">História</button>
+            <button class="u-tab" data-tab="futuro">Futuro</button>
+          </div>
 
+          <div class="u-content">
+            <div class="u-paper" id="uPaper"></div>
 
-    const card = document.getElementById("card");
-    const btnPortal = document.getElementById("btnPortal");
-    const universe = document.getElementById("universe");
-    const senhaCorreta = "recomeço";
+            <div class="u-aside">
+              <b style="display:block;margin-bottom:8px">🌠 Painel</b>
+              <div class="u-kpi">
+                <div><span>Batimento</span><b id="uBeat">ativo</b></div>
+                <div><span>Destino</span><b id="uDest">alinhando</b></div>
+              </div>
 
-    function verificarSenha() {
-  document.getElementById("passwordOverlay").style.display = "flex";
-}
-{
-      
+              <button class="u-btn primary" id="uFinal" style="margin-top:12px;width:100%">
+                Próxima ação 💖
+              </button>
 
-      if (senha === senhaCorreta) {
-        // abre o card
-        card.classList.add("open");
+              <p style="margin:10px 0 0;color:rgba(255,255,255,.65);line-height:1.5">
+                Dica: personalize os textos no JS (DATA).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        // entra no modo universo
-        document.body.classList.add("universe");
+  </section>
 
-        card.classList.add("in-flow");
-universe.prepend(card);
+  <script>
+    /* =========================================================
+       CONFIG
+    ========================================================= */
+    const SENHA_CORRETA = "recomeço";
 
+    /* =========================================================
+       HOME (senha)
+    ========================================================= */
+    const overlay = document.getElementById("passwordOverlay");
+    const input = document.getElementById("passwordInput");
 
-        // esconde o botão do portal (pra não ficar solto)
-        btnPortal.style.display = "none";
+    document.getElementById("btnPortal").addEventListener("click", ()=>{
+      overlay.style.display = "flex";
+      setTimeout(()=> input.focus(), 50);
+    });
 
-        // rolagem suave para mostrar que agora dá pra explorar
-        setTimeout(() => {
-          universe.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 500);
+    document.getElementById("btnCancel").addEventListener("click", ()=>{
+      overlay.style.display = "none";
+      input.value = "";
+    });
 
-      } else if (senha !== null) {
+    document.getElementById("btnConfirm").addEventListener("click", confirmarSenha);
+    input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") confirmarSenha(); });
+
+    function confirmarSenha(){
+      if(input.value === SENHA_CORRETA){
+        overlay.style.display = "none";
+        input.value = "";
+        abrirUniverso();
+      }else{
         alert("Senha incorreta 😢");
       }
     }
 
-    function fecharCard() {
-      card.classList.add("closing");
-      setTimeout(() => {
-        card.classList.remove("open", "closing");
-      }, 300);
+    /* =========================================================
+       PORTAL (HOME <-> UNIVERSO)
+    ========================================================= */
+    const HOME = document.getElementById("home");
+    const UNI = document.getElementById("universo");
+
+    function abrirUniverso(){
+      HOME.classList.add("u-hidden");
+      HOME.classList.remove("u-show");
+      UNI.classList.remove("u-hidden");
+      UNI.classList.add("u-show");
+      UNI.setAttribute("aria-hidden","false");
+      window.scrollTo(0,0);
+      initUniverseOnce();
+    }
+
+    function voltarHome(){
+      const modal = document.getElementById("uModal");
+      modal.classList.remove("open");
+
+      UNI.classList.add("u-hidden");
+      UNI.classList.remove("u-show");
+      UNI.setAttribute("aria-hidden","true");
+      HOME.classList.remove("u-hidden");
+      HOME.classList.add("u-show");
+      window.scrollTo(0,0);
+    }
+
+    /* =========================================================
+       UNIVERSO (UI)
+    ========================================================= */
+    const $u = (sel)=> UNI.querySelector(sel);
+    const $$u = (sel)=> Array.from(UNI.querySelectorAll(sel));
+
+    const uModal = $u("#uModal");
+    const uPaper = $u("#uPaper");
+    const uTitle = $u("#uTitle");
+    const uTabs  = $$u(".u-tab");
+    const uMeter = $u("#uMeter");
+    const uMood  = $u("#uMood");
+    const uLive  = $u("#uLive");
+    const uBeat  = $u("#uBeat");
+    const uDest  = $u("#uDest");
+
+    const DATA = {
+      cartas: [
+        "Carta 1 —\n\nEu programei um portal porque tinha coisa demais pra dizer em pouco espaço.",
+        "Carta 2 —\n\nSe o mundo ficar barulhento, eu ainda encontro silêncio em você.",
+        "Carta 3 —\n\nO universo é grande… mas eu gosto mesmo é do universo de vocês."
+      ],
+      historia:
+`Nossa História —\n
+• Um encontro que virou referência.\n
+• Uma risada que ficou.\n
+• Um detalhe pequeno que mudou tudo.\n
+Final:\nEu te escolheria de novo, em qualquer versão do tempo.`,
+      futuro:
+`Nosso Futuro —\n
+1) Planos leves, mas verdadeiros.\n
+2) Viagens, música e um lugar só nosso.\n
+3) Uma promessa simples:\nEu escolho nós.`
+    };
+
+    let tabAtiva = "cartas";
+    let cartaIndex = 0;
+
+    function toast(msg){
+      uLive.textContent = msg;
+      uLive.style.opacity = "0";
+      setTimeout(()=> uLive.style.opacity = "1", 60);
+    }
+
+    function setMood(level){
+      uMeter.style.width = Math.max(6, Math.min(100, level)) + "%";
+      if(level < 35) uMood.textContent = "estável, aguardando interação 🌠";
+      else if(level < 70) uMood.textContent = "brilho aumentando… dá pra sentir 💫";
+      else uMood.textContent = "tempestade de estrelas: modo intenso 🌠";
+    }
+
+    function openModal(tab){
+      uModal.classList.add("open");
+      uModal.setAttribute("aria-hidden","false");
+      setTab(tab);
+    }
+
+    function closeModal(){
+      uModal.classList.remove("open");
+      uModal.setAttribute("aria-hidden","true");
+    }
+
+    function setTab(tab){
+      tabAtiva = tab;
+      uTabs.forEach(t=> t.classList.toggle("active", t.dataset.tab===tab));
+
+      if(tab === "cartas"){
+        uTitle.textContent = "📨 Cartas";
+        uPaper.textContent = DATA.cartas[cartaIndex % DATA.cartas.length];
+        $u("#uFinal").textContent = "Próxima carta 💌";
+        uBeat.textContent = "acelerando";
+        uDest.textContent = "mais perto";
+        setMood(30 + (cartaIndex*19)%70);
+      }
+      if(tab === "historia"){
+        uTitle.textContent = "🕰️ Nossa História";
+        uPaper.textContent = DATA.historia;
+        $u("#uFinal").textContent = "Marcar momento ✨";
+        uBeat.textContent = "nostálgico";
+        uDest.textContent = "lembranças";
+        setMood(58);
+      }
+      if(tab === "futuro"){
+        uTitle.textContent = "🚀 Nosso Futuro";
+        uPaper.textContent = DATA.futuro;
+        $u("#uFinal").textContent = "Eu escolho nós 💖";
+        uBeat.textContent = "corajoso";
+        uDest.textContent = "alinhado";
+        setMood(88);
+      }
+    }
+
+    // Eventos universo
+    $u("#uBack").addEventListener("click", voltarHome);
+    $u("#uOpen").addEventListener("click", ()=> openModal("cartas"));
+    $u("#uStart").addEventListener("click", ()=> openModal("cartas"));
+    $u("#uClose").addEventListener("click", closeModal);
+
+    uModal.addEventListener("click",(e)=>{ if(e.target===uModal) closeModal(); });
+
+    $$u("[data-open]").forEach(el=>{
+      el.addEventListener("click", ()=> openModal(el.dataset.open));
+    });
+
+    uTabs.forEach(t=>{
+      t.addEventListener("click", ()=> setTab(t.dataset.tab));
+    });
+
+    $u("#uFinal").addEventListener("click", ()=>{
+      if(tabAtiva==="cartas"){ cartaIndex++; setTab("cartas"); sparkleBurst(22); }
+      else if(tabAtiva==="historia"){ toast("Momento marcado no céu ✨"); sparkleBurst(40); }
+      else { toast("Promessa registrada. 💖"); promiseMode(1600); sparkleBurst(52); }
+    });
+
+    // Partículas rápidas
+    function sparkleBurst(n=30){
+      for(let i=0;i<n;i++){
+        const s = document.createElement("div");
+        const size = 3 + Math.random()*6;
+        s.style.cssText = `
+          position:fixed; left:${(50 + (Math.random()*30-15))}%; top:${(50 + (Math.random()*18-9))}%;
+          width:${size}px; height:${size}px; border-radius:99px;
+          background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(108,198,255,.7));
+          box-shadow: 0 0 22px rgba(108,198,255,.35), 0 0 18px rgba(255,107,179,.25);
+          pointer-events:none; z-index: 99999; transform: translate(-50%,-50%); opacity:.95;
+        `;
+        document.body.appendChild(s);
+        const dx=(Math.random()*2-1)*(140+Math.random()*180);
+        const dy=(Math.random()*2-1)*(120+Math.random()*160);
+        const rot=(Math.random()*2-1)*240;
+
+        s.animate([
+          { transform:`translate(-50%,-50%) translate(0,0) rotate(0deg)`, opacity:.95 },
+          { transform:`translate(-50%,-50%) translate(${dx}px,${dy}px) rotate(${rot}deg)`, opacity:0 }
+        ], { duration: 720 + Math.random()*520, easing:"cubic-bezier(.18,.7,.2,1)" });
+
+        setTimeout(()=> s.remove(), 1400);
+      }
+    }
+
+    /* =========================================================
+       CANVAS (estrelas) — inicia só uma vez
+    ========================================================= */
+    const canvas = $u("#u-space");
+    const ctx = canvas.getContext("2d", { alpha:true });
+
+    let started=false, W=0, H=0, dpr=1;
+    let stars=[], mouseX=0, mouseY=0, starBoost=false;
+
+    function initUniverseOnce(){
+      if(started) return;
+      started=true;
+
+      window.addEventListener("mousemove",(e)=>{ mouseX=e.clientX; mouseY=e.clientY; });
+      window.addEventListener("touchmove",(e)=>{
+        const t=e.touches && e.touches[0];
+        if(t){ mouseX=t.clientX; mouseY=t.clientY; }
+      }, {passive:true});
+      window.addEventListener("resize", resize);
+
+      resize();
+      setMood(42);
+      toast("Bem-vindo ao universo de vocês ✨");
+      requestAnimationFrame(draw);
+    }
+
+    function promiseMode(ms=2000){
+      starBoost=true;
+      setTimeout(()=> starBoost=false, ms);
+    }
+
+    function resize(){
+      dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      W = window.innerWidth|0; H = window.innerHeight|0;
+      canvas.width = (W*dpr)|0; canvas.height = (H*dpr)|0;
+      canvas.style.width = W+"px"; canvas.style.height = H+"px";
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      buildStars();
+    }
+
+    function buildStars(){
+      const count = ((W*H)/12000)|0;
+      stars = Array.from({length:count}, ()=>({
+        x:Math.random()*W, y:Math.random()*H, z:Math.random(),
+        r:0.7+Math.random()*1.8, tw:Math.random()*Math.PI*2, sp:0.15+Math.random()*0.35
+      }));
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+
+      const g = ctx.createRadialGradient(W*0.5, H*0.35, 10, W*0.5, H*0.5, Math.max(W,H)*0.75);
+      g.addColorStop(0, "rgba(108,198,255,0.08)");
+      g.addColorStop(0.4, "rgba(255,107,179,0.04)");
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0,0,W,H);
+
+      const mx = (mouseX - W/2) * 0.02;
+      const my = (mouseY - H/2) * 0.02;
+
+      for(const s of stars){
+        s.tw += 0.02 + s.sp*0.02;
+        const twinkle = 0.55 + Math.sin(s.tw)*0.45;
+
+        const speed = (starBoost?1.9:1.0) * (0.15 + s.z*0.9);
+        s.y += speed;
+        if(s.y > H+10){ s.y = -10; s.x = Math.random()*W; }
+
+        const px = s.x + mx*(1+s.z*2);
+        const py = s.y + my*(1+s.z*2);
+
+        const alpha = 0.15 + twinkle*0.85*(0.35 + s.z*0.65);
+        const rad = s.r*(0.75 + s.z*0.85);
+
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+        ctx.arc(px, py, rad, 0, Math.PI*2);
+        ctx.fill();
+
+        if(s.z > 0.65){
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(108,198,255,${alpha*0.18})`;
+          ctx.arc(px, py, rad*3.2, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+
+      requestAnimationFrame(draw);
     }
   </script>
 </body>
 </html>
+
