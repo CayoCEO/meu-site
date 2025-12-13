@@ -466,9 +466,74 @@
 #universo .u-confirm-actions .u-btn{
   flex: 1;
 }
+/* =========================
+   NEBULOSA 3D (Three.js)
+========================= */
+#nebula3D{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 0;
+  pointer-events: none; /* importante: não rouba clique do header */
+}
 
-    
+#universo.nebula-on #nebula3D{
+  display: block;
+}
+
+/* =========================
+   MODO NEBULOSA — CINEMA TOTAL
+========================= */
+
+/* Canvas 3D por cima de tudo */
+#nebula3D{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+/* Quando o modo nebulosa está ativo */
+#universo.nebula-on #nebula3D{
+  display: block;
+}
+
+/* ESCONDE TUDO */
+#universo.nebula-on header,
+#universo.nebula-on main,
+#universo.nebula-on .u-nav,
+#universo.nebula-on .u-confirm,
+#universo.nebula-on .u-modal{
+  display: none !important;
+}
+
+/* Estilo para o botão de "Sair da Nebulosa" */
+#exitNebulaWithButton{
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+#universo.nebula-on #exitNebulaWithButton{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
   </style>
+
+<script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+
+
 </head>
 
 <body>
@@ -519,6 +584,9 @@
   ========================== -->
   <section id="universo" class="u-hidden" aria-hidden="true">
     <canvas id="u-space"></canvas>
+    <!-- CANVAS NEBULOSA 3D (modo especial) -->
+<canvas id="nebula3D"></canvas>
+
 
 <iframe
   id="uYT"
@@ -603,6 +671,10 @@
     </div>
   </div>
 </div>
+
+<!-- BOTÃO DE INTERAÇÃO PARA A NEBULOSA -->
+<button id="exitNebulaWithButton" class="u-chip" style="display:none;">Sair da Nebulosa ✨</button>
+
 
       </section>
 
@@ -744,6 +816,290 @@
     const uLive  = $u("#uLive");
     const uBeat  = $u("#uBeat");
     const uDest  = $u("#uDest");
+
+/* =========================================================
+   NEBULOSA 3D (Three.js) — Galaxy + interação
+========================================================= */
+
+const nebCanvas = document.getElementById("nebula3D");
+let neb = {
+  started: false,
+  running: false,
+  scene: null,
+  camera: null,
+  renderer: null,
+  galaxy: null,
+  raf: 0,
+  drag: { on:false, x:0, y:0, vx:0, vy:0 },
+  zoom: 6.5
+};
+
+function isUI(target){
+  return !!(target && (
+    target.closest("button") ||
+    target.closest("a") ||
+    target.closest("input") ||
+    target.closest(".u-nav") ||
+    target.closest(".u-modal") ||
+    target.closest(".u-confirm") ||
+    target.closest("#uModal") ||
+    target.closest("#uConfirm")
+  ));
+}
+
+function buildGalaxyPoints(){
+  const isMobile = window.matchMedia("(max-width: 720px)").matches;
+  const COUNT = isMobile ? 9000 : 20000;
+
+  const arms = 4;               // braços da galáxia
+  const radius = 5.2;
+  const spin = 1.55;
+  const randomness = 0.35;
+
+  const positions = new Float32Array(COUNT * 3);
+  const colors = new Float32Array(COUNT * 3);
+
+  // cores (centro mais quente, borda mais fria)
+  const cInner = { r: 1.0, g: 0.55, b: 0.25 };
+  const cOuter = { r: 0.50, g: 0.70, b: 1.0 };
+
+  for(let i=0;i<COUNT;i++){
+    const i3 = i * 3;
+
+    const r = Math.pow(Math.random(), 0.55) * radius;  // mais densidade no centro
+    const branch = (i % arms) / arms * Math.PI * 2;
+    const ang = branch + r * spin;
+
+    const randX = (Math.random()*2 - 1) * randomness * (1 - r/radius);
+    const randY = (Math.random()*2 - 1) * randomness * 0.35 * (1 - r/radius);
+    const randZ = (Math.random()*2 - 1) * randomness * (1 - r/radius);
+
+    positions[i3 + 0] = Math.cos(ang) * r + randX;
+    positions[i3 + 1] = randY;
+    positions[i3 + 2] = Math.sin(ang) * r + randZ;
+
+    const t = r / radius;
+    colors[i3 + 0] = cInner.r + (cOuter.r - cInner.r) * t;
+    colors[i3 + 1] = cInner.g + (cOuter.g - cInner.g) * t;
+    colors[i3 + 2] = cInner.b + (cOuter.b - cInner.b) * t;
+  }
+
+  const geom = new THREE.BufferGeometry();
+  geom.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geom.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+  const mat = new THREE.PointsMaterial({
+    size: isMobile ? 0.03 : 0.028,
+    sizeAttenuation: true,
+    depthWrite: false,
+    vertexColors: true,
+    transparent: true,
+    blending: THREE.AdditiveBlending
+  });
+
+  const pts = new THREE.Points(geom, mat);
+
+  // “miolo” brilhante
+  const coreGeom = new THREE.BufferGeometry();
+  const coreCount = isMobile ? 1000 : 2500;
+  const corePos = new Float32Array(coreCount*3);
+  for(let i=0;i<coreCount;i++){
+    const i3=i*3;
+    const rr = Math.pow(Math.random(), 2.2) * 1.1;
+    const a = Math.random()*Math.PI*2;
+    corePos[i3+0] = Math.cos(a)*rr;
+    corePos[i3+1] = (Math.random()*2-1)*0.18;
+    corePos[i3+2] = Math.sin(a)*rr;
+  }
+  coreGeom.setAttribute("position", new THREE.BufferAttribute(corePos,3));
+  const coreMat = new THREE.PointsMaterial({
+    size: isMobile ? 0.05 : 0.055,
+    sizeAttenuation: true,
+    color: new THREE.Color(1,0.8,0.55),
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  });
+  const core = new THREE.Points(coreGeom, coreMat);
+
+  const group = new THREE.Group();
+  group.add(pts);
+  group.add(core);
+
+  return group;
+}
+
+function nebResize(){
+  if(!neb.renderer || !neb.camera) return;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  neb.renderer.setSize(w, h, false);
+  neb.camera.aspect = w / h;
+  neb.camera.updateProjectionMatrix();
+}
+
+function nebInitOnce(){
+  if(neb.started) return;
+  neb.started = true;
+
+  neb.scene = new THREE.Scene();
+
+  neb.camera = new THREE.PerspectiveCamera(
+    60,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    100
+  );
+  neb.camera.position.set(0, 1.1, neb.zoom);
+
+  neb.renderer = new THREE.WebGLRenderer({
+    canvas: nebCanvas,
+    antialias: true,
+    alpha: true,
+    powerPreference: "high-performance"
+  });
+  neb.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  nebResize();
+
+  neb.galaxy = buildGalaxyPoints();
+  neb.scene.add(neb.galaxy);
+
+  // Interação: arrastar pra girar (sem atrapalhar UI)
+  UNI.addEventListener("pointerdown", (e)=>{
+    if(!document.getElementById("universo")?.classList.contains("nebula-on")) return;
+    if(isUI(e.target)) return;
+    neb.drag.on = true;
+    neb.drag.x = e.clientX;
+    neb.drag.y = e.clientY;
+  });
+
+  window.addEventListener("pointermove", (e)=>{
+    if(!neb.drag.on || !neb.running) return;
+    const dx = e.clientX - neb.drag.x;
+    const dy = e.clientY - neb.drag.y;
+    neb.drag.x = e.clientX;
+    neb.drag.y = e.clientY;
+
+    neb.drag.vx = dx * 0.0035;
+    neb.drag.vy = dy * 0.0030;
+
+    // aplica imediatamente (sensação responsiva)
+    neb.galaxy.rotation.y += neb.drag.vx;
+    neb.galaxy.rotation.x += neb.drag.vy;
+    neb.galaxy.rotation.x = Math.max(-1.2, Math.min(1.2, neb.galaxy.rotation.x));
+  });
+
+  window.addEventListener("pointerup", ()=>{ neb.drag.on = false; });
+
+  // Zoom (mouse wheel)
+  window.addEventListener("wheel", (e)=>{
+    if(!neb.running) return;
+    // se estiver mexendo em UI, ignora
+    if(isUI(e.target)) return;
+    neb.zoom += (e.deltaY * 0.0025);
+    neb.zoom = Math.max(3.2, Math.min(12, neb.zoom));
+    neb.camera.position.z = neb.zoom;
+  }, { passive:true });
+
+  // Resize
+  window.addEventListener("resize", nebResize);
+}
+
+function nebLoop(){
+  if(!neb.running) return;
+
+  // rotação “viva” mesmo sem mexer
+  neb.galaxy.rotation.y += 0.0022;
+  neb.galaxy.rotation.x += 0.0006;
+
+  // inércia do drag (soltou e ainda gira um pouco)
+  neb.drag.vx *= 0.92;
+  neb.drag.vy *= 0.92;
+  neb.galaxy.rotation.y += neb.drag.vx;
+  neb.galaxy.rotation.x += neb.drag.vy;
+
+  neb.renderer.render(neb.scene, neb.camera);
+  neb.raf = requestAnimationFrame(nebLoop);
+}
+
+function startNebula3D(){
+  if(!nebCanvas || !window.THREE) {
+    console.warn("Three.js ou canvas nebula3D não carregou.");
+    return;
+  }
+  nebInitOnce();
+  if(neb.running) return;
+  neb.running = true;
+
+  // esconde o canvas antigo 2D (se existir)
+  const old = document.getElementById("u-space");
+  if(old) old.style.display = "none";
+
+  nebResize();
+  cancelAnimationFrame(neb.raf);
+  neb.raf = requestAnimationFrame(nebLoop);
+}
+
+function stopNebula3D(){
+  neb.running = false;
+  cancelAnimationFrame(neb.raf);
+
+const exitNebulaWithButton = document.getElementById("exitNebulaWithButton");
+
+// Exibe o botão quando a nebulosa for ativada
+if (exitNebulaWithButton) {
+  exitNebulaWithButton.addEventListener("click", () => {
+    // Remove a classe "nebula-on" e para a nebulosa
+    document.getElementById("universo").classList.remove("nebula-on");
+    stopNebula3D();
+  });
+}
+
+// Quando a nebulosa for ativada, o botão aparece
+window.addEventListener("click", () => {
+  if (document.getElementById("universo").classList.contains("nebula-on")) {
+    exitNebulaWithButton.style.display = "block";  // Torna o botão visível
+  }
+});
+
+
+  // volta o canvas 2D
+  const old = document.getElementById("u-space");
+  if(old) old.style.display = "";
+
+  // limpa o frame (opcional)
+  if(neb.renderer) neb.renderer.clear?.();
+}
+
+/* =========================================================
+   LIGA/DESLIGA NO SEU BOTÃO "Modo NEBULOSA"
+========================================================= */
+
+// Se você já tem isso no seu JS, só adicione as 3 linhas marcadas.
+const uGlowBtn = $u("#uGlow");
+const uGlowState = $u("#uGlowState");
+
+// (se no seu código já existe glowMode/glowNames, mantém)
+let glowMode = 0;
+const glowNames = ["NEBULOSA","AURORA","DARK"];
+
+if(uGlowBtn){
+  uGlowBtn.addEventListener("click", ()=>{
+    glowMode = (glowMode + 1) % 3;
+    if(uGlowState) uGlowState.textContent = glowNames[glowMode];
+
+    // ✅ AQUI: NEBULOSA LIGA 3D
+    if(glowMode === 0){
+      UNI.classList.add("nebula-on");
+      startNebula3D();
+      toast("Modo NEBULOSA (3D) 🌌");
+    }else{
+      UNI.classList.remove("nebula-on");
+      stopNebula3D();
+      toast("Modo: " + glowNames[glowMode]);
+    }
+  });
+}
 
 
 /* =========================
@@ -1031,5 +1387,3 @@ uYes.addEventListener("click", ()=>{
   </script>
 </body>
 </html>
-
-
