@@ -425,6 +425,49 @@
       #universo .u-card{grid-column: span 12}
       #universo .u-btn{width:100%}
     }
+
+/* =========================
+   CONFIRMAÇÃO DE PROMESSA
+========================= */
+#universo .u-confirm{
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+#universo .u-confirm.show{
+  display: grid;
+}
+
+#universo .u-confirm-box{
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 24px;
+  padding: 24px;
+  width: min(320px, 90%);
+  text-align: center;
+  box-shadow: 0 20px 80px rgba(0,0,0,.6);
+}
+
+#universo .u-confirm-box p{
+  margin: 0 0 18px;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+#universo .u-confirm-actions{
+  display: flex;
+  gap: 12px;
+}
+#universo .u-confirm-actions .u-btn{
+  flex: 1;
+}
+
+    
   </style>
 </head>
 
@@ -549,6 +592,18 @@
             </div>
           </div>
         </div>
+        <!-- CONFIRMAÇÃO DE PROMESSA -->
+<div class="u-confirm" id="uConfirm">
+  <div class="u-confirm-box">
+    <p>isso é uma promessa?</p>
+
+    <div class="u-confirm-actions">
+      <button class="u-btn" id="uNo">Não</button>
+      <button class="u-btn primary" id="uYes">Sim 💖</button>
+    </div>
+  </div>
+</div>
+
       </section>
 
       <section class="u-grid">
@@ -601,7 +656,7 @@
               </button>
 
               <p style="margin:10px 0 0;color:rgba(255,255,255,.65);line-height:1.5">
-                
+                Dica: personalize os textos no JS (DATA).
               </p>
             </div>
           </div>
@@ -700,7 +755,6 @@ const uMusicState = $u("#uMusicState");
 
 const YT_URL = "https://www.youtube.com/embed/cEkd17gPTlk?autoplay=1&loop=1&playlist=cEkd17gPTlk";
 
-
 let ytOn = false;
 
 function ytPlay(){
@@ -732,7 +786,7 @@ if(uMusic && uYT){
       cartas: [
         "Carta 1 —\n\nEu programei um portal porque tinha coisa demais pra dizer em pouco espaço.",
         "Carta 2 —\n\nSe o mundo ficar barulhento, eu ainda encontro silêncio em você.",
-        "Carta 3 —\n\nO universo é grande… mas eu gosto mesmo é do nosso universo."
+        "Carta 3 —\n\nO universo é grande… mas eu gosto mesmo é do universo de vocês."
       ],
       historia:
 `Nossa História —\n
@@ -820,11 +874,43 @@ Final:\nEu te escolheria de novo, em qualquer versão do tempo.`,
       t.addEventListener("click", ()=> setTab(t.dataset.tab));
     });
 
-    $u("#uFinal").addEventListener("click", ()=>{
-      if(tabAtiva==="cartas"){ cartaIndex++; setTab("cartas"); sparkleBurst(22); }
-      else if(tabAtiva==="historia"){ toast("Momento marcado no céu ✨"); sparkleBurst(40); }
-      else { toast("Promessa registrada. 💖"); promiseMode(1600); sparkleBurst(52); }
-    });
+    const uConfirm = $u("#uConfirm");
+const uYes = $u("#uYes");
+const uNo = $u("#uNo");
+
+$u("#uFinal").addEventListener("click", ()=>{
+  if(tabAtiva === "cartas"){
+    cartaIndex++;
+    setTab("cartas");
+    sparkleBurst(22);
+  }
+  else if(tabAtiva === "historia"){
+    toast("Momento marcado no céu ✨");
+    sparkleBurst(40);
+  }
+  else if(tabAtiva === "futuro"){
+    // 🔥 abre confirmação
+    uConfirm.classList.add("show");
+  }
+});
+
+// NÃO = fecha
+uNo.addEventListener("click", ()=>{
+  uConfirm.classList.remove("show");
+});
+
+// SIM = registra promessa
+uYes.addEventListener("click", ()=>{
+  uConfirm.classList.remove("show");
+
+  toast("Promessa registrada. 💖");
+  promiseMode(1600);
+  sparkleBurst(60);
+
+  // opcional: você pode travar o botão depois
+  // $u("#uFinal").disabled = true;
+});
+
 
     // Partículas rápidas
     function sparkleBurst(n=30){
@@ -945,4 +1031,5 @@ Final:\nEu te escolheria de novo, em qualquer versão do tempo.`,
   </script>
 </body>
 </html>
+
 
