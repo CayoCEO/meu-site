@@ -482,9 +482,10 @@
   style="display:none"
   width="0"
   height="0"
-  src="https://www.youtube.com/embed/L0yxngUOm5o?autoplay=1&loop=1&playlist=L0yxngUOm5o"
-  allow="autoplay"
-></iframe>
+  src=""
+  allow="autoplay">
+</iframe>
+
 
 
     <div class="u-vignette"></div>
@@ -691,29 +692,40 @@
 
 
 /* =========================
-   MÚSICA (YouTube)
+   MÚSICA (YouTube) — pausa real
 ========================= */
 const uYT = document.getElementById("uYT");
 const uMusic = $u("#uMusic");
 const uMusicState = $u("#uMusicState");
 
+const YT_URL = "https://www.youtube.com/embed/L0yxngUOm5o?autoplay=1&loop=1&playlist=L0yxngUOm5o";
+
 let ytOn = false;
+
+function ytPlay(){
+  if(!uYT) return;
+  uYT.style.display = "block";
+  uYT.src = YT_URL;          // 🔥 isso inicia (autoplay=1)
+  ytOn = true;
+  if(uMusicState) uMusicState.textContent = "ON";
+  toast("Música ON 🎧");
+}
+
+function ytStop(){
+  if(!uYT) return;
+  uYT.src = "";              // 🔥 isso PARA DE VERDADE
+  uYT.style.display = "none";
+  ytOn = false;
+  if(uMusicState) uMusicState.textContent = "OFF";
+  toast("Música pausada ⏸️");
+}
 
 if(uMusic && uYT){
   uMusic.addEventListener("click", ()=>{
-    ytOn = !ytOn;
-
-    if(ytOn){
-      uYT.style.display = "block";
-      uMusicState.textContent = "ON";
-      toast("Música ON 🎧");
-    }else{
-      uYT.style.display = "none";
-      uMusicState.textContent = "OFF";
-      toast("Música pausada ⏸️");
-    }
+    ytOn ? ytStop() : ytPlay();
   });
 }
+
 
     const DATA = {
       cartas: [
@@ -932,3 +944,4 @@ Final:\nEu te escolheria de novo, em qualquer versão do tempo.`,
   </script>
 </body>
 </html>
+
