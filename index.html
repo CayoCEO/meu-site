@@ -476,6 +476,17 @@
   ========================== -->
   <section id="universo" class="u-hidden" aria-hidden="true">
     <canvas id="u-space"></canvas>
+
+<iframe
+  id="uYT"
+  style="display:none"
+  width="0"
+  height="0"
+  src="https://www.youtube.com/embed/L0yxngUOm5o?autoplay=1&loop=1&playlist=L0yxngUOm5o"
+  allow="autoplay"
+></iframe>
+
+
     <div class="u-vignette"></div>
 
     <header>
@@ -489,6 +500,12 @@
         </div>
 
         <div class="u-nav">
+
+<button class="u-chip" id="uMusic">
+  Música <b id="uMusicState">OFF</b> 🎧
+</button>
+
+
           <button class="u-chip" id="uBack">⬅ Voltar</button>
           <button class="u-chip" id="uOpen">Portal 🪐</button>
           <button class="u-chip" id="uGlow">Modo <b id="uGlowState">NEBULOSA</b> 🌌</button>
@@ -671,6 +688,32 @@
     const uLive  = $u("#uLive");
     const uBeat  = $u("#uBeat");
     const uDest  = $u("#uDest");
+
+
+/* =========================
+   MÚSICA (YouTube)
+========================= */
+const uYT = document.getElementById("uYT");
+const uMusic = $u("#uMusic");
+const uMusicState = $u("#uMusicState");
+
+let ytOn = false;
+
+if(uMusic && uYT){
+  uMusic.addEventListener("click", ()=>{
+    ytOn = !ytOn;
+
+    if(ytOn){
+      uYT.style.display = "block";
+      uMusicState.textContent = "ON";
+      toast("Música ON 🎧");
+    }else{
+      uYT.style.display = "none";
+      uMusicState.textContent = "OFF";
+      toast("Música pausada ⏸️");
+    }
+  });
+}
 
     const DATA = {
       cartas: [
@@ -889,4 +932,3 @@ Final:\nEu te escolheria de novo, em qualquer versão do tempo.`,
   </script>
 </body>
 </html>
-
