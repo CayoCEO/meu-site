@@ -528,6 +528,54 @@
   pointer-events: auto;
 }
 
+#exitNebulaWithButton{
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 10000;
+  display: none;
+  pointer-events: auto;
+}
+
+#universo.nebula-on #exitNebulaWithButton{
+  display: inline-flex !important;
+}
+
+
+
+/* BOTÃO: só aparece na nebulosa */
+#exitNebulaWithButton{
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 10000;        /* acima da galáxia */
+  display: none;         /* escondido por padrão */
+  pointer-events: auto;
+}
+
+/* aparece só quando nebula-on */
+#universo.nebula-on #exitNebulaWithButton{
+  display: inline-flex;
+}
+
+/* (se você estiver usando "cinema total", garanta que NÃO está escondendo esse botão) */
+#universo.nebula-on #exitNebulaWithButton{
+  display: inline-flex !important;
+}
+
+#exitNebulaWithButton{
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 10000;        /* acima do nebula3D */
+  display: none;         /* escondido por padrão */
+  pointer-events: auto;
+}
+
+#universo.nebula-on #exitNebulaWithButton{
+  display: inline-flex !important;
+}
+
 
   </style>
 
@@ -565,6 +613,10 @@
         <div class="particle" style="left:90%;animation-delay:3.2s"></div>
       </div>
     </div>
+
+<button id="exitNebulaWithButton" class="u-chip">Sair da Nebulosa ✨</button>
+
+
   </section>
 
   <!-- Overlay de senha -->
@@ -584,6 +636,11 @@
   ========================== -->
   <section id="universo" class="u-hidden" aria-hidden="true">
     <canvas id="u-space"></canvas>
+
+<!-- BOTÃO DE SAÍDA (FICA FORA DO HEADER/MAIN) -->
+  <button id="exitNebulaWithButton" class="u-chip">Sair da Nebulosa ✨</button>
+
+
     <!-- CANVAS NEBULOSA 3D (modo especial) -->
 <canvas id="nebula3D"></canvas>
 
@@ -1044,7 +1101,64 @@ function stopNebula3D(){
   neb.running = false;
   cancelAnimationFrame(neb.raf);
 
+// Botão "Sair da Nebulosa" — FORÇA desligar (mobile+desktop)
 const exitNebulaWithButton = document.getElementById("exitNebulaWithButton");
+
+function forceExitNebula(){
+  const UNI = document.getElementById("universo");
+  if(!UNI) return;
+
+  // 1) remove a classe que mantém o modo ligado
+  UNI.classList.remove("nebula-on");
+
+  // 2) tenta parar a nebulosa 3D
+  if(typeof stopNebula3D === "function") stopNebula3D();
+
+  // 3) força esconder o canvas 3D (mesmo se CSS falhar)
+  const neb = document.getElementById("nebula3D");
+  if(neb) neb.style.display = "none";
+
+  // 4) volta o canvas antigo 2D (se você usa)
+  const old = document.getElementById("u-space");
+  if(old) old.style.display = "";
+
+  console.log("Nebulosa desligada ✅");
+}
+
+if(exitNebulaWithButton){
+  // desktop
+  exitNebulaWithButton.addEventListener("click", (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    forceExitNebula();
+  });
+
+  // mobile (garante)
+  exitNebulaWithButton.addEventListener("touchstart", (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    forceExitNebula();
+  }, { passive:false });
+
+  // pointer (mais universal)
+  exitNebulaWithButton.addEventListener("pointerdown", (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    forceExitNebula();
+  });
+} else {
+  console.warn("Botão exitNebulaWithButton não encontrado no HTML.");
+}
+
+
+if(exitNebulaWithButton){
+  exitNebulaWithButton.addEventListener("click", ()=>{
+    const UNI = document.getElementById("universo");
+    UNI.classList.remove("nebula-on");
+    stopNebula3D();
+  });
+}
+
 
 // Exibe o botão quando a nebulosa for ativada
 if (exitNebulaWithButton) {
@@ -1384,6 +1498,18 @@ uYes.addEventListener("click", ()=>{
 
       requestAnimationFrame(draw);
     }
+
+const exitNebulaWithButton = document.getElementById("exitNebulaWithButton");
+
+if(exitNebulaWithButton){
+  exitNebulaWithButton.addEventListener("click", ()=>{
+    const UNI = document.getElementById("universo");
+    UNI.classList.remove("nebula-on");
+    if(typeof stopNebula3D === "function") stopNebula3D();
+  });
+}
+
+
   </script>
 </body>
 </html>
